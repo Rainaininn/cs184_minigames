@@ -9,7 +9,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_sudoku">Sudoku</string>
     <string name="sudoku">Sudoku</string>
     <string name="new_game">Start New Game</string>
     <string name="add_new_board">Add New Board</string>
@@ -32,4 +32,6 @@
     <string name="choose_number">Choose Number</string>
     <string name="piece_unsure">Mark piece as unsure</string>
     <string name="remove_piece">Remove Piece</string>
+    <string name="Sudoku">Sudoku</string>
+
 </resources>

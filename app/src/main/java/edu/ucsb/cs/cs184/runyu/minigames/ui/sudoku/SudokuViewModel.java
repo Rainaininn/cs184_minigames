@@ -10,7 +10,7 @@ public class SudokuViewModel extends ViewModel {
 
     public SudokuViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is sudoku fragment");
     }
 
     public LiveData<String> getText() {

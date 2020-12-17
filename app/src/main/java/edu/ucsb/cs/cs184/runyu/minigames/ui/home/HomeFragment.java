@@ -27,6 +27,13 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import edu.ucsb.cs.cs184.runyu.minigames.MainActivity;
 import edu.ucsb.cs.cs184.runyu.minigames.R;
@@ -35,7 +42,9 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     ImageView imageView;
-    TextView name, email, score1, score2, score3, scorePrompt, scoreF, scoreS, scoreM;
+    TextView name, email, scorePrompt, scoreF, scoreS, scoreM, textWelcome;
+    private static TextView score1, score2, score3;
+    public static String userID = "n/a";
     Button signOut;
     //Google Sign in
     private static GoogleSignInClient mGoogleSignInClient;
@@ -63,6 +72,7 @@ public class HomeFragment extends Fragment {
         scoreM = (TextView) root.findViewById(R.id.textViewScoreM);
         signOut = (Button) root.findViewById(R.id.buttonSignOut);
         signin = root.findViewById(R.id.sign_in_button);
+        textWelcome = root.findViewById(R.id.textWelcome);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -70,10 +80,6 @@ public class HomeFragment extends Fragment {
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         if(isSignedIn == false){
-//            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                    .requestEmail()
-//                    .build();
-//            mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
             makeInvisible();
             signin.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -101,28 +107,6 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
-
-//        signin.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                switch (v.getId()) {
-//                    case R.id.sign_in_button:
-//                        signIn();
-//                        break;
-//                    // ...
-//                }
-//            }
-//        });
-//        signOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switch (v.getId()) {
-//                    case R.id.buttonSignOut:
-//                        signOut();
-//                        break;
-//                }
-//            }
-//        });
 
         return root;
     }
@@ -157,12 +141,67 @@ public class HomeFragment extends Fragment {
                 String personName = acct.getDisplayName();
                 String personEmail = acct.getEmail();
                 Uri personPhoto = acct.getPhotoUrl();
+                userID = acct.getId();
 
                 name.setText(personName);
                 email.setText(personEmail);
                 Glide.with(this).load(String.valueOf(personPhoto)).into(imageView);
 
                 isSignedIn = true;
+
+                //GET Best Scores
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(userID);
+                DatabaseReference myRefGun = myRef.child("Gun");
+                DatabaseReference myRefSudoku = myRef.child("Sudoku");
+                DatabaseReference myRefQuiz = myRef.child("Quiz");
+
+                myRefGun.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String value = dataSnapshot.getValue(String.class);
+                        Log.d("TAG", "Value1 is: " + value);
+                        if(value != null){
+                            score1.setText(value);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.w("TAG", "Failed to read value.", error.toException());
+                    }
+                });
+                myRefSudoku.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String value = dataSnapshot.getValue(String.class);
+                        Log.d("TAG", "Value2 is: " + value);
+                        if(value != null){
+                            long milliseconds = Long.parseLong(value);
+                            long minutes = (milliseconds / 1000) / 60;
+                            long seconds = (milliseconds / 1000) % 60;
+                            String bestTime = minutes+":"+seconds;
+                            score2.setText(bestTime);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.w("TAG", "Failed to read value.", error.toException());
+                    }
+                });
+                myRefQuiz.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String value = dataSnapshot.getValue(String.class);
+                        Log.d("TAG", "Value3 is: " + value);
+                        if(value != null){
+                            score3.setText(value);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.w("TAG", "Failed to read value.", error.toException());
+                    }
+                });
             }
 
         } catch (ApiException e) {
@@ -180,6 +219,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), "Signed out successfully!", Toast.LENGTH_SHORT).show();
                     makeInvisible();
                     isSignedIn = false;
+                    userID = "n/a";
                 }
             });
     }
@@ -197,6 +237,7 @@ public class HomeFragment extends Fragment {
         scoreM.setVisibility(View.INVISIBLE);
         signOut.setVisibility(View.INVISIBLE);
         signin.setVisibility(View.VISIBLE);
+        textWelcome.setVisibility(View.VISIBLE);
 
     }
 
@@ -213,6 +254,7 @@ public class HomeFragment extends Fragment {
         scoreM.setVisibility(View.VISIBLE);
         signOut.setVisibility(View.VISIBLE);
         signin.setVisibility(View.INVISIBLE);
+        textWelcome.setVisibility(View.INVISIBLE);
     }
 
 }

@@ -15,6 +15,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +32,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import edu.ucsb.cs.cs184.runyu.minigames.R;
+import edu.ucsb.cs.cs184.runyu.minigames.ui.home.HomeFragment;
 
 public class GameActivity extends AppCompatActivity implements CellGroupFragment.OnFragmentInteractionListener, KeyboardFragment.OnKeyboardFragmentInteractionListener{
     private final String TAG = "GameActivity";
@@ -80,6 +89,7 @@ public class GameActivity extends AppCompatActivity implements CellGroupFragment
 
     public void startChronometer(){
         if(!running){
+            resetChronometer();
             chronometer.start();
             running = true;
         }
@@ -213,6 +223,42 @@ public class GameActivity extends AppCompatActivity implements CellGroupFragment
             sudokuCongrats.setVisibility(View.VISIBLE);
             View keyboardFrag = findViewById(R.id.keyboardFragment);
             keyboardFrag.setVisibility(View.INVISIBLE);
+
+            //update to Firebase
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            String userID = HomeFragment.userID;
+            Log.d("Sudoku", "userID : " + userID);
+            if(userID.equals("n/a") == false) {
+                DatabaseReference myRef = database.getReference(userID);
+                DatabaseReference myRefSudoku = myRef.child("Sudoku");
+                long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+                Log.d("Sudoku", "The time taken is :" + elapsedMillis);
+
+                myRefSudoku.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        String value = dataSnapshot.getValue(String.class);
+                        Log.d(TAG, "Value is: " + value);
+                        if (value == null) {
+                            myRefSudoku.setValue(elapsedMillis + "");
+                        } else {
+                            long prevBestTime = Long.parseLong(value);
+                            if (prevBestTime > elapsedMillis) {
+                                myRefSudoku.setValue(elapsedMillis + "");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w(TAG, "Failed to read value.", error.toException());
+                    }
+                });
+            }
+
         } else {
             Toast.makeText(this, getString(R.string.board_incorrect), Toast.LENGTH_SHORT).show();
         }
@@ -226,41 +272,6 @@ public class GameActivity extends AppCompatActivity implements CellGroupFragment
         Intent intent = new Intent("edu.ucsb.cs.cs184.runyu.InstructionsActivity");
         startActivity(intent);
     }
-
-//    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1 && resultCode == RESULT_OK) {
-//            int row = ((clickedGroup - 1) / 3) * 3 + (clickedCellId / 3);
-//            int column = ((clickedGroup - 1) % 3) * 3 + ((clickedCellId) % 3);
-//
-//            Button buttonCheckBoard = findViewById(R.id.buttonCheckBoard);
-//            if (data.getBooleanExtra("removePiece", false)) {
-//                clickedCell.setText("");
-//                clickedCell.setBackground(getResources().getDrawable(R.drawable.table_border_cell));
-//                currentBoard.setValue(row, column, 0);
-//                buttonCheckBoard.setVisibility(View.INVISIBLE);
-//            } else {
-//                int number = data.getIntExtra("chosenNumber", 1);
-//                clickedCell.setText(String.valueOf(number));
-//                currentBoard.setValue(row, column, number);
-//
-//                boolean isUnsure = data.getBooleanExtra("isUnsure", false);
-//                if (isUnsure) {
-//                    clickedCell.setBackground(getResources().getDrawable(R.drawable.table_border_cell_unsure));
-//                } else {
-//                    clickedCell.setBackground(getResources().getDrawable(R.drawable.table_border_cell));
-//                }
-//
-//                if (currentBoard.isBoardFull()) {
-//                    buttonCheckBoard.setVisibility(View.VISIBLE);
-//                } else {
-//                    buttonCheckBoard.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public void onFragmentInteraction(int groupId, int cellId, View view) {
