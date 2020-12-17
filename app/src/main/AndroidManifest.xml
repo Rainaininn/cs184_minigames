@@ -56,6 +56,23 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
         </activity>
+<!--        Speed Math-->
+        <activity android:name=".ui.speedmath.StartGame"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="edu.ucsb.cs.cs184.runyu.StartGame" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.speedmath.GameOver"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="edu.ucsb.cs.cs184.runyu.GameOver" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -30,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import edu.ucsb.cs.cs184.runyu.minigames.ui.home.HomeFragment;
 import edu.ucsb.cs.cs184.runyu.minigames.ui.home.HomeViewModel;
+import edu.ucsb.cs.cs184.runyu.minigames.ui.speedmath.StartGame;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_shootup, R.id.nav_sudoku, R.id.nav_tictactoe)
+                R.id.nav_home, R.id.nav_shootup, R.id.nav_sudoku, R.id.nav_tictactoe, R.id.nav_speedmath)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -91,6 +92,20 @@ public class MainActivity extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 //        updateUI(account);
+    }
+
+    public void startGame(View view) {
+        Intent intent = new Intent("edu.ucsb.cs.cs184.runyu.StartGame");
+        intent.putExtra("questions", 20);
+        startActivity(intent);
+        finish();
+    }
+
+    public void startGameHard(View view) {
+        Intent intent = new Intent("edu.ucsb.cs.cs184.runyu.StartGame");
+        intent.putExtra("questions", 50);
+        startActivity(intent);
+        finish();
     }
 
 }

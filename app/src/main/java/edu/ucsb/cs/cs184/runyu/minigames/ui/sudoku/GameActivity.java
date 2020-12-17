@@ -289,13 +289,6 @@ public class GameActivity extends AppCompatActivity implements CellGroupFragment
             Toast.makeText(this, getString(R.string.start_piece_error), Toast.LENGTH_SHORT).show();
         }
         Log.i(TAG, "Clicked group " + groupId + ", cell " + cellId);
-        // don't go to Choose Number Activity
-//        if (!isStartPiece(groupId, cellId)) {
-//            Intent intent = new Intent("edu.ucsb.cs.cs184.runyu.ChooseNumberActivity");
-//            startActivityForResult(intent, 1);
-//        } else {
-//            Toast.makeText(this, getString(R.string.start_piece_error), Toast.LENGTH_SHORT).show();
-//        }
 
     }
 

@@ -27,4 +27,9 @@
         android:name="edu.ucsb.cs.cs184.runyu.minigames.ui.tictactoe.TicTacToe"
         android:label="Tic Tac Toe"
         tools:layout="@layout/fragment_tictactoe" />
+    <fragment
+        android:id="@+id/nav_speedmath"
+        android:name="edu.ucsb.cs.cs184.runyu.minigames.ui.speedmath.SpeedmathFragment"
+        android:label="Speed Math"
+        tools:layout="@layout/fragment_speedmath" />
 </navigation>

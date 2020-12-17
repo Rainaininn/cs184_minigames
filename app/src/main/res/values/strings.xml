@@ -35,5 +35,6 @@
     <string name="Sudoku">Sudoku</string>
     <string name="tic_tac_toe">Tic Tac Toe</string>
     <string name="shoot_up">Shoot Up</string>
+    <string name="speed_math">Speed Math</string>
 
 </resources>

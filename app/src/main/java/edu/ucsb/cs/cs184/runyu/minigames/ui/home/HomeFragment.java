@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment {
                 DatabaseReference myRef = database.getReference(userID);
                 DatabaseReference myRefGun = myRef.child("Gun");
                 DatabaseReference myRefSudoku = myRef.child("Sudoku");
-                DatabaseReference myRefQuiz = myRef.child("Quiz");
+                DatabaseReference myRefQuiz = myRef.child("Math");
 
                 myRefGun.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -194,7 +194,11 @@ public class HomeFragment extends Fragment {
                         String value = dataSnapshot.getValue(String.class);
                         Log.d("TAG", "Value3 is: " + value);
                         if(value != null){
-                            score3.setText(value);
+                            long milliseconds = Integer.parseInt(value)*1000;
+                            long minutes = (milliseconds / 1000) / 60;
+                            long seconds = (milliseconds / 1000) % 60;
+                            String bestTime = minutes+":"+seconds;
+                            score3.setText(bestTime);
                         }
                     }
                     @Override

@@ -20,5 +20,9 @@
             android:id="@+id/nav_tictactoe"
             android:icon="@drawable/ic_highlight_off_24px"
             android:title="@string/tic_tac_toe" />
+        <item
+            android:id="@+id/nav_speedmath"
+            android:icon="@drawable/ic_calculate_24px"
+            android:title="@string/speed_math" />
     </group>
 </menu>
