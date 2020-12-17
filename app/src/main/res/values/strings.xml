@@ -33,5 +33,7 @@
     <string name="piece_unsure">Mark piece as unsure</string>
     <string name="remove_piece">Remove Piece</string>
     <string name="Sudoku">Sudoku</string>
+    <string name="tic_tac_toe">Tic Tac Toe</string>
+    <string name="shoot_up">Shoot Up</string>
 
 </resources>

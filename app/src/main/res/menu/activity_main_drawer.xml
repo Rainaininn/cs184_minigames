@@ -11,10 +11,14 @@
         <item
             android:id="@+id/nav_shootup"
             android:icon="@drawable/ic_videogame_asset_24px"
-            android:title="Shoot Up" />
+            android:title="@string/shoot_up" />
         <item
             android:id="@+id/nav_sudoku"
             android:icon="@drawable/ic_grid_on_24px"
-            android:title="Sudoku" />
+            android:title="@string/sudoku" />
+        <item
+            android:id="@+id/nav_tictactoe"
+            android:icon="@drawable/ic_highlight_off_24px"
+            android:title="@string/tic_tac_toe" />
     </group>
 </menu>
