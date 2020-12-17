@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "879465335354",
+    "firebase_url": "https://cs184-minigames-default-rtdb.firebaseio.com",
+    "project_id": "cs184-minigames",
+    "storage_bucket": "cs184-minigames.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879465335354:android:3a8dce9efac97fac104303",
+        "android_client_info": {
+          "package_name": "edu.ucsb.cs.cs184.runyu.minigames"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879465335354-aciitlbdha10f062aq5c5cj0uvp0kqdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjf3h4DHw_E4n5WpLUNZcwTWiNQMuYaXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879465335354-aciitlbdha10f062aq5c5cj0uvp0kqdc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
